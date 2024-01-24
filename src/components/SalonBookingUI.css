@@ -1,0 +1,139 @@
+/* SalonBookingUI.css */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5; /* Light Background */
+    color: #333; /* Dark Text Color */
+  }
+  
+  /* Container Styles */
+  .Container {
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff; /* White Container Background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border-color: #218c53;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    
+  }
+  
+  /* Typography Styles */
+  h3, h5 {
+    color: #333; /* Dark Text Color */
+  }
+  
+  /* Button Styles */
+  .custom-button {
+    background-color: #3498db; /* Blue Button Color */
+    color: #ffffff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .custom-button:hover {
+    background-color: #2980b9; /* Darker Blue on Hover */
+  }
+  
+  /* ToggleButton Styles */
+  .ToggleButtonGroup {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    display: flex;
+    
+     /* Stack buttons vertically on small screens */
+  }
+  
+  .ToggleButton {
+    background-color: #f5f5f5; /* Light ToggleButton Background */
+    color: #333; /* Dark Text Color */
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .ToggleButton:hover {
+    background-color: #ddd; /* Lighter Background on Hover */
+  }
+  
+  /* Grid Styles */
+  .Grid {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap; /* Wrap Grid items on small screens */
+  }
+  
+  .GridItem {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Chip Styles */
+  .Chip {
+    margin-right: 0.5rem;
+    background-color: #ddd; /* Light Chip Background */
+    color: #333; /* Dark Text Color */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .Chip:hover {
+    background-color: #ccc; /* Lighter Background on Hover */
+  }
+  
+  /* TextField Styles */
+  .TextField {
+    margin-bottom: 1rem;
+    color: #333; /* Dark Text Color */
+  }
+  
+  /* DateRangePicker Styles */
+  .DateRangePicker {
+    margin-bottom: 1rem;
+  }
+  
+  /* Available Time Slots Styles (Placeholder) */
+  .AvailableTimeSlots {
+    margin-top: 1rem;
+  }
+  
+  /* Book Appointment Button Styles */
+  .BookAppointmentButton {
+    margin-top: 2rem;
+    background-color: #27ae60; /* Green Button Color */
+    color: #ffffff;
+    width: 40%;
+  }
+  
+  .BookAppointmentButton:hover {
+    background-color: #218c53; /* Darker Green on Hover */
+  }
+  
+  /* Animation for subtle hover effect on buttons and chips */
+  .ButtonHoverAnimation:hover,
+  .Chip:hover {
+    transform: scale(1.05);
+  }
+  
+.StoreName{
+    display: flex;
+    justify-content: center;
+}
+/* .SelectedServices-Stylist{
+    display: flex;
+    justify-content: center;
+} */
+

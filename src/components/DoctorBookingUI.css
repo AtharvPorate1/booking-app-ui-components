@@ -1,0 +1,74 @@
+/* src/components/DoctorBookingUI.css */
+.booking-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .booking-heading {
+    color: #4caf50;
+    text-align: center;
+  }
+  
+  .dentist-info {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .dentist-description {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .select-services,
+  .selected-services-heading,
+  .selected-services-container,
+  .total-duration,
+  .select-date-heading,
+  .available-slots-heading,
+  .available-slots-container,
+  .book-appointment-btn {
+    margin-bottom: 20px;
+  }
+  
+  .available-slots-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .book-appointment-btn {
+    width: 100%;
+  }
+  
+  /* Custom styles for a more creative look */
+  .select-services,
+  .selected-services-heading,
+  .selected-services-container,
+  .total-duration,
+  .select-date-heading,
+  .available-slots-heading,
+  .available-slots-container {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .available-slots-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  /* Animations */
+  .book-appointment-btn {
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-appointment-btn:hover {
+    background-color: #45a049;
+  }
+  

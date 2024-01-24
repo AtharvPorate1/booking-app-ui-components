@@ -1,0 +1,9 @@
+
+[
+    { "name": "Doctor Booking", "type": "doctorBooking" },
+    { "name": "Salon Booking", "type": "salonBooking" },
+    { "name": "Arcade Booking", "type":"arcadeBooking"},
+    { "name": "Hospital Booking", "type":"hospitalBooking"}
+    
+]
+  

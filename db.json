@@ -1,0 +1,126 @@
+{
+  "store": {
+    "booked_time_slots": [
+      {
+        "date": "2024-01-24",
+        "time": "11:00",
+        "duration": 30
+      }
+    ]
+  },
+  "stylists": [
+    {
+      "id": 1,
+      "name": "Stylist 1",
+      "photo": "placeholder_url_1",
+      "services": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Stylist 2",
+      "photo": "placeholder_url_2",
+      "services": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Stylist 3",
+      "photo": "placeholder_url_3",
+      "services": [
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "name": "Haircut",
+      "duration": 30
+    },
+    {
+      "id": 2,
+      "name": "Hair Coloring",
+      "duration": 60
+    },
+    {
+      "id": 3,
+      "name": "Blowout",
+      "duration": 45
+    },
+    {
+      "id": 4,
+      "name": "Manicure",
+      "duration": 30
+    },
+    {
+      "id": 5,
+      "name": "Pedicure",
+      "duration": 45
+    },
+    {
+      "id": 6,
+      "name": "Facial",
+      "duration": 60
+    },
+    {
+      "id": 7,
+      "name": "Massage",
+      "duration": 45
+    },
+    {
+      "id": 8,
+      "name": "Waxing",
+      "duration": 30
+    },
+    {
+      "id": 9,
+      "name": "Eyelash Extensions",
+      "duration": 60
+    },
+    {
+      "id": 10,
+      "name": "Makeup",
+      "duration": 45
+    },
+    {
+      "id": 11,
+      "name": "Body Scrub",
+      "duration": 60
+    },
+    {
+      "id": 12,
+      "name": "Hairstyling",
+      "duration": 45
+    },
+    {
+      "id": 13,
+      "name": "Nail Art",
+      "duration": 30
+    },
+    {
+      "id": 14,
+      "name": "Beard Trim",
+      "duration": 15
+    },
+    {
+      "id": 15,
+      "name": "Bridal Makeup",
+      "duration": 90
+    }
+  ]
+}

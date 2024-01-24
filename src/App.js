@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import StoresPage from './components/StoresPage';
+import DoctorBookingUI from './components/DoctorBookingUI';
+import SalonBookingUI from './components/SalonBookingUI';
 
-function App() {
+import storeData from './data/storeData.json';
+import ArcadeBookingUI from './components/ArcadeBookingUI';
+import HospitalUI from './components/HospitalUI';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<StoresPage storeData={storeData} />} />
+        <Route path="/doctorBooking" element={<DoctorBookingUI />} />
+        <Route path="/salonBooking" element={<SalonBookingUI />} />
+        <Route path="/arcadeBooking" element={<ArcadeBookingUI />} />
+        <Route path="/hospitalBooking" element={<HospitalUI />} />
+        {/* Add more routes for other store types */}
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
