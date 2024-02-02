@@ -11,7 +11,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '@mui/material';
-import { DateRangePicker } from '@mui/lab';
+
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import './SalonBookingUI.css';
@@ -95,6 +95,18 @@ const SalonBookingUI = () => {
   const handleBookAppointment = () => {
     if (selectedDate && calculateTotalDuration() > 0 && selectedTimeSlot) {
       try {
+        // Get the selected stylist's name
+        const selectedStylistName =
+          selectedOption === 'stylist' && selectedStylistId !== null
+            ? stylistsData.find((stylist) => stylist.id === selectedStylistId).name
+            : null;
+  
+        // Get the names and durations of selected services
+        const selectedServiceInfo = selectedServices.map((service) => ({
+          name: service.name,
+          duration: service.duration,
+        }));
+  
         // Update booked slots in the state
         const updatedBookedSlots = [
           ...bookedSlots,
@@ -102,16 +114,22 @@ const SalonBookingUI = () => {
             date: selectedDate.format('YYYY-MM-DD'),
             time: selectedTimeSlot.format('HH:mm'),
             duration: calculateTotalDuration(),
+            stylist: selectedStylistName,
+            services: selectedServiceInfo,
           },
         ];
         setBookedSlots(updatedBookedSlots);
-
+  
         // Update booked slots on the JSON server
         axios.post('http://localhost:3001/store', {
           booked_time_slots: updatedBookedSlots,
         })
           .then(() => {
-            console.log(`Appointment booked on ${selectedDate.format('YYYY-MM-DD')} at ${selectedTimeSlot.format('HH:mm')}`);
+            console.log(
+              `Appointment booked on ${selectedDate.format(
+                'YYYY-MM-DD'
+              )} at ${selectedTimeSlot.format('HH:mm')}`
+            );
             // Optionally, display a success message
             alert('Appointment booked successfully!');
           })
@@ -130,6 +148,7 @@ const SalonBookingUI = () => {
       alert('Please select a valid date, time slot, and services before booking.');
     }
   };
+  
 
   const getTimeSlots = (startingTime, closingTime, totalDuration) => {
     const timeSlots = [];

@@ -1,0 +1,98 @@
+{
+    "bookingData": {
+      "booked_time_slots": [
+        {
+          "date": "2024-01-25",
+          "time": "10:30",
+          "duration": 45,
+          "doctor": "Dr. Smith",
+          "services": [
+            {
+              "name": "Dental Checkup",
+              "duration": 30
+            }
+          ]
+        }
+      ]
+    },
+    "doctors": [
+      {
+        "id": 1,
+        "name": "Dr. Smith",
+        "photo": "placeholder_url_doctor_1",
+        "specializations": [
+          {
+            "id": 1,
+            "name": "Dentistry",
+            "consultancyTime": 60 
+          },
+          {
+            "id": 2,
+            "name": "Orthopedics",
+            "consultancyTime": 45
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Dr. Johnson",
+        "photo": "placeholder_url_doctor_2",
+        "specializations": [
+          {
+            "id": 3,
+            "name": "Ophthalmology",
+            "consultancyTime": 60
+          },
+          {
+            "id": 4,
+            "name": "Gynecology",
+            "consultancyTime": 45
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Dr. Williams",
+        "photo": "placeholder_url_doctor_3",
+        "specializations": [
+          {
+            "id": 5,
+            "name": "Cardiology",
+            "consultancyTime": 60
+          },
+          {
+            "id": 6,
+            "name": "Dermatology",
+            "consultancyTime": 45
+          }
+        ]
+      }
+    ],
+    "specializations": [
+      {
+        "id": 1,
+        "name": "Dentistry"
+      },
+      {
+        "id": 2,
+        "name": "Orthopedics"
+      },
+      {
+        "id": 3,
+        "name": "Ophthalmology"
+      },
+      {
+        "id": 4,
+        "name": "Gynecology"
+      },
+      {
+        "id": 5,
+        "name": "Cardiology"
+      },
+      {
+        "id": 6,
+        "name": "Dermatology"
+      }
+    ]
+  }
+  

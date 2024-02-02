@@ -1,5 +1,4 @@
-// src/components/DoctorBookingUI.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -12,62 +11,129 @@ import {
   TextField,
   Chip,
 } from '@mui/material';
-import { DateRangePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import axios from 'axios';
+import dayjs from 'dayjs';
 
 const HospitalUI = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedServiceId, setSelectedServiceId] = useState(null);
   const [selectedServices, setSelectedServices] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [doctorsData, setDoctorsData] = useState([]);
+  const [servicesData, setServicesData] = useState([]);
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [consultationTime, setConsultationTime] = useState(0);
 
-  // Temporary data for doctors
-  const doctorsData = [
-    { id: 1, name: 'Dr. Smith', services: [1, 2] },
-    { id: 2, name: 'Dr. Johnson', services: [3, 4] },
-    // Add more doctors as needed
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const hospitalResponse = await axios.get('http://localhost:3002/doctors');
+        const servicesResponse = await axios.get('http://localhost:3002/specializations');
 
-  // Temporary data for services
-  const servicesData = [
-    { id: 1, name: 'Dental Checkup', duration: 30 },
-    { id: 2, name: 'Tooth Extraction', duration: 60 },
-    { id: 3, name: 'Eye Exam', duration: 45 },
-    { id: 4, name: 'Gynecology Consultation', duration: 60 },
-    // Add more services as needed
-  ];
+        setDoctorsData(hospitalResponse.data);
+        setServicesData(servicesResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  // Function to handle doctor selection
+    fetchData();
+  }, []);
+
   const handleDoctorSelect = (doctorId) => {
-    setSelectedDoctor(doctorsData.find((doctor) => doctor.id === doctorId));
+    const selectedDoctor = doctorsData.find((doctor) => doctor.id === doctorId);
+    setSelectedDoctor(selectedDoctor);
+    setConsultationTime(selectedDoctor.specializations[0]?.consultancyTime || 0);
   };
 
-  // Function to handle service selection
   const handleServiceSelect = (event) => {
     const newSelectedServiceId = event.target.value;
     setSelectedServiceId(newSelectedServiceId);
   };
 
-  // Function to add the selected service to the list
   const handleAddService = () => {
     const selectedService = servicesData.find((service) => service.id === selectedServiceId);
-
+  
     if (selectedService && !selectedServices.some((service) => service.id === selectedService.id)) {
-      setSelectedServices((prevSelectedServices) => [...prevSelectedServices, selectedService]);
-      setSelectedServiceId(null); // Reset the selected service
+      setSelectedServices((prevSelectedServices) => [
+        ...prevSelectedServices,
+        {
+          id: selectedService.id,
+          name: selectedService.name,
+          consultancyTime: selectedDoctor.specializations.find(spec => spec.id === selectedService.id)?.consultancyTime || 0,
+        },
+      ]);
+      setSelectedServiceId(null);
     }
   };
 
-  // Function to remove a selected service
   const handleServiceRemove = (serviceId) => {
     setSelectedServices((prevSelectedServices) =>
       prevSelectedServices.filter((service) => service.id !== serviceId)
     );
   };
 
-  // Function to calculate total duration of selected services
   const calculateTotalDuration = () => {
-    return selectedServices.reduce((total, service) => total + service.duration, 0);
+    return selectedServices.reduce((total, service) => total + service.consultancyTime, 0);
+  };
+
+  const getTimeSlots = (consultancyTime) => {
+    const timeSlots = [];
+    let currentTime = dayjs('09:00 AM', 'h:mm A');
+
+    while (currentTime.isBefore(dayjs('06:00 PM', 'h:mm A'))) {
+      timeSlots.push(currentTime.clone());
+      currentTime = currentTime.add(consultancyTime, 'minutes');
+    }
+
+    return timeSlots;
+  };
+
+  const handleTimeSlotSelect = (selectedTime) => {
+    setSelectedTimeSlot(selectedTime);
+  };
+
+  const handleBookAppointment = () => {
+    if (selectedDate && calculateTotalDuration() > 0 && selectedTimeSlot) {
+      try {
+        const updatedBookedSlots = [
+          ...bookedSlots,
+          {
+            date: selectedDate.format('YYYY-MM-DD'),
+            time: selectedTimeSlot.format('HH:mm'),
+            duration: calculateTotalDuration(),
+            doctor: selectedDoctor.name,
+            services: selectedServices.map((service) => ({
+              name: service.name,
+              duration: service.consultancyTime,
+            })),
+          },
+        ];
+        setBookedSlots(updatedBookedSlots);
+
+        axios.post('http://localhost:3002/bookings', {
+          booked_time_slots: updatedBookedSlots,
+        })
+          .then(() => {
+            console.log(
+              `Appointment booked on ${selectedDate.format('YYYY-MM-DD')} at ${selectedTimeSlot.format('HH:mm')}`
+            );
+            alert('Appointment booked successfully!');
+          })
+          .catch((error) => {
+            console.error('Error updating booked slots:', error);
+            alert('Error booking appointment. Please try again.');
+          });
+      } catch (error) {
+        console.error('Error handling time slot selection:', error);
+        alert('Error booking appointment. Please try again.');
+      }
+    } else {
+      alert('Please select a valid date, time slot, and services before booking.');
+    }
   };
 
   return (
@@ -76,7 +142,6 @@ const HospitalUI = () => {
         Doctor Booking
       </Typography>
 
-      {/* Select Doctor */}
       <Typography variant="h6" gutterBottom>
         Select Doctor:
       </Typography>
@@ -88,9 +153,9 @@ const HospitalUI = () => {
           value={selectedDoctor ? selectedDoctor.id : ''}
           onChange={(e) => handleDoctorSelect(e.target.value)}
           label="Choose a Doctor"
-          sx={{ height: 40 }} // Reduce the size of the selector
+          sx={{ height: 40 }}
         >
-          {doctorsData.map((doctor) => (
+          {doctorsData && doctorsData.map((doctor) => (
             <MenuItem key={doctor.id} value={doctor.id}>
               {doctor.name}
             </MenuItem>
@@ -98,7 +163,6 @@ const HospitalUI = () => {
         </Select>
       </FormControl>
 
-      {/* Select Services */}
       <Typography variant="h6" gutterBottom>
         Select Services:
       </Typography>
@@ -110,20 +174,18 @@ const HospitalUI = () => {
           value={selectedServiceId || ''}
           onChange={handleServiceSelect}
           label="Select Services"
-          sx={{ height: 40 }} // Reduce the size of the selector
+          sx={{ height: 40 }}
         >
           {selectedDoctor &&
-            servicesData
-              .filter((service) => selectedDoctor.services.includes(service.id))
-              .map((service) => (
-                <MenuItem key={service.id} value={service.id}>
-                  {service.name} ({service.duration} min)
-                </MenuItem>
-              ))}
+            servicesData &&
+            selectedDoctor.specializations.map((spec) => (
+              <MenuItem key={spec.id} value={spec.id}>
+                {`${spec.name} (${spec.consultancyTime} min)`}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
 
-      {/* Add Selected Service Button */}
       <Button
         variant="contained"
         color="primary"
@@ -134,7 +196,6 @@ const HospitalUI = () => {
         Add Service
       </Button>
 
-      {/* Display Selected Services and Total Duration */}
       <Typography variant="h6" gutterBottom>
         Selected Services:
       </Typography>
@@ -142,7 +203,7 @@ const HospitalUI = () => {
         {selectedServices.map((service) => (
           <Grid item key={service.id}>
             <Chip
-              label={`${service.name} (${service.duration} min)`}
+              label={`${service.name} (${service.consultancyTime} min)`}
               onDelete={() => handleServiceRemove(service.id)}
               color="primary"
               variant="outlined"
@@ -155,12 +216,11 @@ const HospitalUI = () => {
         Total Duration: {calculateTotalDuration()} min
       </Typography>
 
-      {/* Select Date */}
       <Typography variant="h6" gutterBottom>
         Select Date:
       </Typography>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DateRangePicker
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
           startText="Start Date"
           endText="End Date"
           value={selectedDate}
@@ -174,21 +234,30 @@ const HospitalUI = () => {
         />
       </LocalizationProvider>
 
-      {/* Display Available Time Slots (Placeholder) */}
-      {selectedDate && (
+      {selectedDate && selectedDoctor && (
         <div>
           <Typography variant="h6" gutterBottom>
-            Available Time Slots on {selectedDate.toLocaleDateString()}:
+            Available Time Slots on {selectedDate.format('YYYY-MM-DD')}:
           </Typography>
-          {/* Placeholder for available time slots */}
           <Grid container spacing={2}>
-            {/* Display available time slots here */}
+            {getTimeSlots(consultationTime).map((timeSlot, index) => (
+              <Grid item key={index}>
+                <Button variant="outlined" onClick={() => handleTimeSlotSelect(timeSlot)}>
+                  {timeSlot.format('h:mm A')}
+                </Button>
+              </Grid>
+            ))}
           </Grid>
         </div>
       )}
 
-      {/* Book Appointment Button (Placeholder) */}
-      <Button variant="contained" color="primary" sx={{ marginTop: 2 }}>
+      <Button
+        variant="contained"
+        color="primary"
+        disabled={!selectedDate || calculateTotalDuration() === 0}
+        onClick={handleBookAppointment}
+        sx={{ marginTop: 2 }}
+      >
         Book Appointment
       </Button>
     </Container>

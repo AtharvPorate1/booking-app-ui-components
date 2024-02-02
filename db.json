@@ -2,9 +2,16 @@
   "store": {
     "booked_time_slots": [
       {
-        "date": "2024-01-24",
-        "time": "11:00",
-        "duration": 30
+        "date": "2024-01-25",
+        "time": "10:30",
+        "duration": 45,
+        "stylist": "Stylist 2",
+        "services": [
+          {
+            "name": "Massage",
+            "duration": 45
+          }
+        ]
       }
     ]
   },
