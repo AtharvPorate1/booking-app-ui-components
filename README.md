@@ -1,3 +1,9 @@
+## SaloonBooking UI is completed
+### Hospital Booking UI is in progress
+### Rest is just placeholder
+
+
+
 
 # How to run locally
 
@@ -25,3 +31,4 @@
 ```http
     json-server --watch db.json --port 3001
 ```
+
